@@ -3,6 +3,7 @@ package se.apendo.pingis.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +16,9 @@ import se.apendo.pingis.util.MatchOutcome;
 import se.apendo.pingis.util.NumberOfSets;
 
 @Component
-public class RatingService {
+public class MastchService {
+	
+	private static final Logger LOG = Logger.getLogger(MastchService.class);
 	
 	@Autowired
 	private MatchRepository matchRepository;
@@ -41,16 +44,25 @@ public class RatingService {
 			matchType = NumberOfSets.BEST_OFF_THREE;
 		}
 		
+		LOG.debug("Playing "+matchType+" match between "+player1.getName() + " and " + player2.getName());
+		
 		Map<String, MatchOutcome> matchResult = createMatchOutcome(player1.getName(), player2.getName(), result);
 		
-		int player1elo = calculateELO(player1.getRating(), player2.getRating(), matchResult.get(player1.getName()), matchType);
-		int player2elo = calculateELO(player2.getRating(), player1.getRating(), matchResult.get(player2.getName()), matchType);
+		int player1rating = calculateRating(player1.getRating(), player2.getRating(), matchResult.get(player1.getName()), matchType);
+		int player2rating = calculateRating(player2.getRating(), player1.getRating(), matchResult.get(player2.getName()), matchType);
 		
-		player1.setRating(player1elo);
-		player2.setRating(player2elo);
+		LOG.debug("New rating for "+player1.getName() + ": " + player1rating);
+		LOG.debug("New rating for "+player2.getName() + ": " + player2rating);
 		
+		player1.setRating(player1rating);
+		player2.setRating(player2rating);
+		
+		LOG.debug("Updating user rating for " + player1.getName());
 		userRepository.save(player1);
+		LOG.debug("Updating user rating for " + player2.getName());
 		userRepository.save(player2);
+		
+		LOG.debug("Saving match");
 		matchRepository.save(match);
 		
 		return match;
@@ -65,9 +77,11 @@ public class RatingService {
 			String[] score = setResult.split("-");
 			if (Integer.parseInt(score[0]) > Integer.parseInt(score[1])) {
 				player1SetsWon++;
+				LOG.debug(player1name + " won set " + (player1SetsWon + player2SetsWon));
 			}
 			if (Integer.parseInt(score[0]) < Integer.parseInt(score[1])) {
 				player2SetsWon++;
+				LOG.debug(player2name + " won set " + (player1SetsWon + player2SetsWon));
 			}
 		}
 		
@@ -75,22 +89,25 @@ public class RatingService {
 		if (player1SetsWon > player2SetsWon) {
 			ret.put(player1name, MatchOutcome.WIN);
 			ret.put(player2name, MatchOutcome.LOSS);
+			LOG.debug(player1name + " won the match");
 		}
 		
 		else if (player1SetsWon < player2SetsWon) {
 			ret.put(player1name, MatchOutcome.LOSS);
 			ret.put(player2name, MatchOutcome.WIN);
+			LOG.debug(player2name + " won the match");
 		}
 		
 		else {
 			ret.put(player1name, MatchOutcome.DRAW);
 			ret.put(player2name, MatchOutcome.DRAW);
+			LOG.debug("Match ended in a draw");
 		}
 		
 		return ret;
 	}
 
-	public int calculateELO(int player1Rating, int player2Rating, MatchOutcome outcome, NumberOfSets sets) {
+	public int calculateRating(int player1Rating, int player2Rating, MatchOutcome outcome, NumberOfSets sets) {
 
 		double actualScore;
 
@@ -105,23 +122,16 @@ public class RatingService {
 		}
 
 		double exponent = (double) (player2Rating - player1Rating) / 400;
-		int K = 16;
-		
-		
-		double expectedOutcome = 0;
+		int kValue = 16;
+		double expectedOutcome = (1 / (1 + (Math.pow(10, exponent))));
 		
 		if (sets == NumberOfSets.BEST_OFF_ONE) {
-			expectedOutcome = (1 / (1 + (Math.pow(10, exponent))));
-			K = 8;
+			kValue = 8;
 		}
 		else if (sets == NumberOfSets.BEST_OFF_THREE) {
-			expectedOutcome = (1 / (1 + (Math.pow(10, exponent))));
-			//expectedOutcome = (expectedOutcome * expectedOutcome) * (3 - 2 * expectedOutcome);			
+			expectedOutcome = (expectedOutcome * expectedOutcome) * (3 - 2 * expectedOutcome);	
 		}
-
-		// calculate new rating
-		int newRating = (int) Math.round(player1Rating + K * (actualScore - expectedOutcome));
-
+		int newRating = (int) Math.round(player1Rating + kValue * (actualScore - expectedOutcome));
 		return newRating;
 	}
 }

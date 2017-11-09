@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import se.apendo.pingis.data.Match;
-import se.apendo.pingis.service.RatingService;
+import se.apendo.pingis.service.MastchService;
 
 @Controller
 public class MatchController {   
 	
 	@Autowired
-	private RatingService ratingService;
+	private MastchService ratingService;
 	
 	@PostMapping(path = "/addmatch")
 	public ResponseEntity<Match> addMatch(@RequestBody MatchForm matchForm) {
