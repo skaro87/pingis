@@ -49,6 +49,8 @@ import { AddmatchComponent } from './addmatch/addmatch.component';
 import { RulesComponent } from './rules/rules.component';
 import { UserComponent } from './user/user.component';
 
+import { MomentPipe } from './pipe/moment.pipe';
+
 
 @NgModule({
   declarations: [
@@ -57,7 +59,8 @@ import { UserComponent } from './user/user.component';
     StandingsComponent,
     HistoryComponent,
     AddmatchComponent,
-    RulesComponent
+    RulesComponent,
+    MomentPipe
   ],
   imports: [
     BrowserModule,

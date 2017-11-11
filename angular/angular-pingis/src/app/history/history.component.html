@@ -1,3 +1,14 @@
-<pre>
-{{history | json}}
-</pre>
+<div *ngFor="let match of history"
+	class="container"
+    fxLayout
+    fxLayout.xs="column"
+    fxLayoutAlign="center"
+    fxLayoutGap="20px"
+    fxLayoutGap.xs="0">
+    
+  <div fxFlex="25%">{{match.time | momentPipe}}</div> 
+  <div fxFlex="25%">{{match.sets[0].player1}} - {{match.sets[0].player2}}</div>
+  <div fxFlex>
+  	<span *ngFor="let set of match.sets"> {{set.player1score}} - {{set.player2score}} </span>
+  </div>
+  </div>

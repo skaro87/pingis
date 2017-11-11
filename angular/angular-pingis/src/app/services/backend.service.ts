@@ -22,5 +22,9 @@ export class BackendService {
   getHistory(): Observable<any> {
 	  return this.http.get('/api/match/history');
   }
+  
+  submitMatch(match): Observable<any> {
+	  return this.http.post('/api/match', match);
+  }
 
 }

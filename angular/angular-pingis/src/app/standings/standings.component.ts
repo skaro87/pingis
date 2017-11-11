@@ -21,7 +21,7 @@ export class StandingsComponent implements OnInit {
 
   ngOnInit() {
 	  this.backend.getStandings().subscribe ((res:Response) => {
-		  this.standings = new MatTableDataSource(res);
+		this.standings = new MatTableDataSource(res);
 	  });
   }
 

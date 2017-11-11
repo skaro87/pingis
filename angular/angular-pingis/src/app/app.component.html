@@ -17,20 +17,20 @@
 </mat-toolbar>
 
 <mat-menu #menu="matMenu">
-<button mat-menu-item>
+<button mat-menu-item routerLink="addmatch">
 	<mat-icon>add_circle_outline</mat-icon>
 	<span [style.vertical-align]="'sub'">Lägg till match</span>
 </button>
-<button mat-menu-item>
+<button mat-menu-item routerLink="standings">
 	<mat-icon>format_list_numbered
 </mat-icon>
 	<span [style.vertical-align]="'sub'">Ranking</span>
 </button>
-<button mat-menu-item>
+<button mat-menu-item routerLink="history">
 	<mat-icon>history</mat-icon>
 	<span [style.vertical-align]="'sub'">Matchhistorik</span>
 </button>
-<button mat-menu-item>
+<button mat-menu-item routerLink="rules">
 	<mat-icon>info_outline</mat-icon>
 	<span [style.vertical-align]="'sub'">Regler</span>
 </button>

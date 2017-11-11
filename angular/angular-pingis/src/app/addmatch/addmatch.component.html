@@ -1,4 +1,4 @@
-<mat-horizontal-stepper [linear]="true">
+<mat-horizontal-stepper [linear]="true" #stepper>
   <mat-step [stepControl]="players">
     <form [formGroup]="players">
       <ng-template matStepLabel>Välj spelare</ng-template>
@@ -34,34 +34,31 @@
       </mat-form-field>
       </mat-grid-tile>
       
-      <mat-grid-tile [colspan]="1" [rowspan]="1">Set 1: </mat-grid-tile>
-      <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <mat-grid-tile [colspan]="3" [rowspan]="1">Set 1: 
       <mat-form-field>
        	<input type="number" min="0" max="999" matInput placeholder="Poäng {{players.value.user1?.name}}" formControlName="score1player1">
       </mat-form-field>
       <mat-form-field>
-       	<input matInput placeholder="Poäng {{players.value.user2?.name}}" formControlName="score1player2">
+       	<input type="number" min="0" max="999" matInput placeholder="Poäng {{players.value.user2?.name}}" formControlName="score1player2">
       </mat-form-field>
       </mat-grid-tile>
       <div *ngIf="score.value.set == 3">
       <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-      <mat-grid-tile [colspan]="1" [rowspan]="1">Set 2: </mat-grid-tile>
-      <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <mat-grid-tile [colspan]="3" [rowspan]="">Set 2: 
       <mat-form-field>
-       	<input matInput placeholder="Poäng {{players.value.user1?.name}}" formControlName="score2player1">
+       	<input type="number" min="0" max="999" matInput placeholder="Poäng {{players.value.user1?.name}}" formControlName="score2player1">
       </mat-form-field>
       <mat-form-field>
-       	<input matInput placeholder="Poäng {{players.value.user2?.name}}" formControlName="score2player2">
+       	<input type="number" min="0" max="999"  matInput placeholder="Poäng {{players.value.user2?.name}}" formControlName="score2player2">
       </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-      <mat-grid-tile [colspan]="1" [rowspan]="1">Set 3: </mat-grid-tile>
-      <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <mat-grid-tile [colspan]="3" [rowspan]="1">Set 3: 
       <mat-form-field>
-       	<input matInput placeholder="Poäng {{players.value.user1?.name}}" formControlName="score3player1">
+       	<input type="number" min="0" max="999" matInput placeholder="Poäng {{players.value.user1?.name}}" formControlName="score3player1">
       </mat-form-field>
       <mat-form-field>
-       	<input matInput placeholder="Poäng {{players.value.user2?.name}}" formControlName="score3player2">
+       	<input type="number" min="0" max="999" matInput placeholder="Poäng {{players.value.user2?.name}}" formControlName="score3player2">
       </mat-form-field>
       </mat-grid-tile>
       </div>
@@ -86,7 +83,7 @@
     </div>
     <div>
       <button mat-button matStepperPrevious>Tillbaka</button>
-      <button mat-button (click)="submitMatch()">Skicka</button>
+      <button mat-button (click)="submitMatch(stepper)">Skicka</button>
     </div>
   </mat-step>
 </mat-horizontal-stepper>

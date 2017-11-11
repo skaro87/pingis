@@ -20,7 +20,14 @@ export class AddmatchComponent implements OnInit {
 		  constructor(private backend: BackendService, private _formBuilder: FormBuilder) { }
 
 		  ngOnInit() {
-		    this.players = this._formBuilder.group({
+		    this.buildForms();
+		    this.backend.getAllUsers().subscribe(res => {
+		    	this.users = res;
+		    });
+		  }
+		  
+	buildForms(){
+		this.players = this._formBuilder.group({
 		      user1: [null, Validators.required],
 		      user2: [null, Validators.required]
 		    });
@@ -33,19 +40,43 @@ export class AddmatchComponent implements OnInit {
 		      score3player1: [''],
 		      score3player2: ['']
 		    });
-		    
-		    this.backend.getAllUsers().subscribe(res => {
-		    	this.users = res;
-		    });
-		    
-		    console.log(this.players);
-		  }
+	}
 		
 
-		submitMatch() {
-			console.log("HERE");
+		submitMatch(stepper) {
+			let match = new MatchForm();
+			match.player1 = this.players.value.user1.id;
+			match.player2 = this.players.value.user2.id;
+			match.sets.push(this.generateSet(this.players.value.user1.name,this.score.value.score1player1,this.players.value.user2.name, this.score.value.score1player2));
+			
+			if (this.score.value.set == 3) {
+				match.sets.push(this.generateSet(this.players.value.user1.name,this.score.value.score2player1,this.players.value.user2.name, this.score.value.score2player2));
+				
+				if (this.score.value.score3player1 && this.score.value.score3player2){
+					match.sets.push(this.generateSet(this.players.value.user1.name,this.score.value.score3player1,this.players.value.user2.name, this.score.value.score3player2));
+				}
+			}
+			
+			console.log(match);
+			this.backend.submitMatch(match).subscribe(res => {
+				console.log(res);
+				stepper.selectedIndex = 0;
+				this.players.reset();
+				this.score.reset();
+			})
+		}
+		
+		generateSet(player1name, player1score, player2name, player2score) {
+			console.log(player1name);
+			
+			return {[player1name] : player1score, [player2name] : player2score};
 		}
 
-	
 
+}
+
+class MatchForm {
+	player1: string;
+	player2: string;
+	sets = [];
 }

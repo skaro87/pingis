@@ -1,5 +1,7 @@
 package se.apendo.pingis.data;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +18,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import lombok.Data;
 
@@ -34,12 +38,15 @@ public class Match {
 	@OrderBy("id ASC")
 	@JsonManagedReference
 	private List<PingisSet> sets = new ArrayList<>();
+	
+	private Timestamp time;
 
 	private Match() {}
 
 		public Match(List<User> users, List<Map<String, Integer>> result) {
 		this.users = users;
 		result.forEach(m -> addSetFromMap(m));
+		this.time = Timestamp.valueOf(LocalDateTime.now());
 	}
 		
 	private void addSetFromMap(Map<String, Integer> map) {
@@ -81,6 +88,18 @@ public class Match {
 
 	public void setSets(List<PingisSet> result) {
 		this.sets = result;
+	}
+
+	public Timestamp getTime() {
+		return time;
+	}
+
+	public void setTime(Timestamp time) {
+		this.time = time;
+	}
+	
+	public Long getId() {
+		return id;
 	}
 
 	
