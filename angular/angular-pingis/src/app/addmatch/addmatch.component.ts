@@ -44,7 +44,6 @@ export class AddmatchComponent implements OnInit {
 
 		submitMatch() {
 			console.log("HERE");
-			this.ngOnInit();
 		}
 
 	
