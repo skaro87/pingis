@@ -1,11 +1,22 @@
 package se.apendo.pingis.data;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Data;
 
@@ -15,47 +26,61 @@ public class Match {
 	
 	private @Id @GeneratedValue Long id;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="match_player_1")
-	private User player1;
+	@ManyToMany
+	@JsonBackReference
+	private List<User> users;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="match_player_2")
-	private User player2;
-	
-	
-	private String result;
+	@OneToMany(mappedBy="match", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OrderBy("id ASC")
+	@JsonManagedReference
+	private List<PingisSet> sets = new ArrayList<>();
 
 	private Match() {}
 
-	public Match(User player1, User player2, String result) {
-		this.player1 = player1;
-		this.player2 = player2;
-		this.result = result;
+		public Match(List<User> users, List<Map<String, Integer>> result) {
+		this.users = users;
+		result.forEach(m -> addSetFromMap(m));
+	}
+		
+	private void addSetFromMap(Map<String, Integer> map) {
+		String player1 = null;
+		String player2 = null;
+		int player1score = 0;
+		int player2score = 0;
+		
+		for (Entry<String, Integer> e : map.entrySet()) {
+			if (player1 == null) {
+				player1 = e.getKey();
+				player1score = e.getValue();
+			}
+			
+			else if (player2 == null) {
+				player2 = e.getKey();
+				player2score = e.getValue();
+			}
+			
+		}
+		
+		PingisSet set = new PingisSet(player1, player1score, player2, player2score);
+		set.setMatch(this);
+		sets.add(set);
 	}
 
-	public User getPlayer1() {
-		return player1;
+
+	public List<User> getUsers() {
+		return users;
 	}
 
-	public void setPlayer1(User player1) {
-		this.player1 = player1;
+	public void setUsers(List<User> users) {
+		this.users = users;
 	}
 
-	public User getPlayer2() {
-		return player2;
+	public List<PingisSet> getSets() {
+		return sets;
 	}
 
-	public void setPlayer2(User player2) {
-		this.player2 = player2;
-	}
-
-	public String getResult() {
-		return result;
-	}
-
-	public void setResult(String result) {
-		this.result = result;
+	public void setSets(List<PingisSet> result) {
+		this.sets = result;
 	}
 
 	

@@ -1,0 +1,28 @@
+<div class="example-container mat-elevation-z8">
+
+  <mat-table #table [dataSource]="standings">
+
+    <ng-container matColumnDef="rank">
+      <mat-header-cell *matHeaderCellDef> Plats </mat-header-cell>
+      <mat-cell *matCellDef="let user"> {{user.rank}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef> Namn </mat-header-cell>
+      <mat-cell *matCellDef="let user"> 
+      <a routerLink="/user/{{user.name}}">
+      {{user.name}} 
+      </a>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="rating">
+      <mat-header-cell *matHeaderCellDef> Ranking </mat-header-cell>
+      <mat-cell *matCellDef="let user"> {{user.rating}} </mat-cell>
+    </ng-container>
+
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</div>

@@ -1,10 +1,13 @@
 package se.apendo.pingis.controller;
 
+import java.util.List;
+import java.util.Map;
+
 public class MatchForm {
 	
 	private long player1;
 	private long player2;
-	private String result;
+	private List<Map<String, Integer>> sets;
 	
 	public MatchForm() {
 	}
@@ -21,11 +24,14 @@ public class MatchForm {
 	public void setPlayer2(long player2) {
 		this.player2 = player2;
 	}
-	public String getResult() {
-		return result;
+	
+	
+	public List<Map<String, Integer>> getSets() {
+		return sets;
 	}
-	public void setResult(String result) {
-		this.result = result;
+	public void setSets(List<Map<String, Integer>> score) {
+		this.sets = score;
 	}
+	
 
 }
