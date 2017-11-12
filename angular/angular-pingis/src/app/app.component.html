@@ -2,14 +2,14 @@
 <mat-toolbar color="primary">
 <span><a mat-button routerLink="."><strong>Apendo pingis</strong></a></span>
 
-<div fxShow.sm="false" fxShow="true" >
+<div fxShow.sm="false"  fxShow.xs="false" fxShow="true" >
 <span><a mat-button routerLink="addmatch">Lägg till match</a></span>
 <span><a mat-button routerLink="standings">Ranking</a></span> 
 <span><a mat-button routerLink="history">Matchhistorik</a></span> 
 <span><a mat-button routerLink="rules">Regler</a></span> 
 </div>
 	<span class="fill-remaining-space"></span>
-<div fxShow.sm="true" fxShow="false" >
+<div fxShow.sm="true" fxShow.xs="true" fxShow="false" >
 <button mat-icon-button [matMenuTriggerFor]="menu" bg-color="primary">
 	<mat-icon>more_vert</mat-icon>
 </button>

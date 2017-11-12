@@ -28,9 +28,10 @@ export class AddmatchComponent implements OnInit {
 		  
 	buildForms(){
 		this.players = this._formBuilder.group({
-		      user1: [null, Validators.required],
-		      user2: [null, Validators.required]
+		      "user1": [null, Validators.required],
+		      "user2": [null, Validators.required]
 		    });
+		
 		    this.score = this._formBuilder.group({
 		      set: [null, Validators.required],
 		      score1player1: ['', Validators.required],
@@ -41,12 +42,16 @@ export class AddmatchComponent implements OnInit {
 		      score3player2: ['']
 		    });
 	}
+	
+	
 		
 
 		submitMatch(stepper) {
 			let match = new MatchForm();
 			match.player1 = this.players.value.user1.id;
 			match.player2 = this.players.value.user2.id;
+			
+			if (match.player1 != match.player2) {
 			match.sets.push(this.generateSet(this.players.value.user1.name,this.score.value.score1player1,this.players.value.user2.name, this.score.value.score1player2));
 			
 			if (this.score.value.set == 3) {
@@ -63,7 +68,16 @@ export class AddmatchComponent implements OnInit {
 				stepper.selectedIndex = 0;
 				this.players.reset();
 				this.score.reset();
-			})
+			});
+			
+			}
+			
+			else {
+				console.log('Both players had the same user ID');
+				stepper.selectedIndex = 0;
+				this.players.reset();
+				this.score.reset();
+			}
 		}
 		
 		generateSet(player1name, player1score, player2name, player2score) {

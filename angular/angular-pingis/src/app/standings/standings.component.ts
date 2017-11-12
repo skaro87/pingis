@@ -12,7 +12,7 @@ import { BackendService } from '../services/backend.service';
 })
 export class StandingsComponent implements OnInit {
 
-  standings: MatTableDataSource;
+  standings: MatTableDataSource<any>;
   displayedColumns = ['rank', 'name', 'rating'];
 
 	
@@ -21,7 +21,7 @@ export class StandingsComponent implements OnInit {
 
   ngOnInit() {
 	  this.backend.getStandings().subscribe ((res:Response) => {
-		this.standings = new MatTableDataSource(res);
+			this.standings = new MatTableDataSource(res);
 	  });
   }
 

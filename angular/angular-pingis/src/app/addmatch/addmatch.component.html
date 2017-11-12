@@ -2,20 +2,28 @@
   <mat-step [stepControl]="players">
     <form [formGroup]="players">
       <ng-template matStepLabel>Välj spelare</ng-template>
-      <mat-form-field>
-        <mat-select placeholder="Spelare 1" formControlName="user1">
-    		<mat-option *ngFor="let user of users" [value]="user" >
-      		{{ user.name }}
-   		 </mat-option>
-   		 </mat-select>
-   		  </mat-form-field>
-   		  <mat-form-field>
-   		 <mat-select placeholder="Spelare 2" formControlName="user2">
-    		<mat-option *ngFor="let user of users" [value]="user">
-      		{{ user.name }}
-   		 </mat-option>
-  </mat-select>
-      </mat-form-field>
+      
+      
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+      	<div fxFlex.xs fxFlex="200px">
+      		<mat-form-field>
+       			<mat-select placeholder="Spelare 1" formControlName="user1">
+    				<mat-option *ngFor="let user of users" [value]="user" >
+      					{{ user.name }}
+   		 			</mat-option>
+   		 		</mat-select>
+   		  	</mat-form-field>
+   		</div>
+   		<div fxFlex.xs fxFlex="200px">
+   			<mat-form-field>
+   		 		<mat-select placeholder="Spelare 2" formControlName="user2">
+    				<mat-option *ngFor="let user of users" [value]="user">
+      					{{ user.name }}
+   		 			</mat-option>
+  				</mat-select>
+      		</mat-form-field>
+      	</div>
+      </div>
       <div>
         <button mat-button matStepperNext>Nästa</button>
       </div>
@@ -24,46 +32,66 @@
   <mat-step [stepControl]="score">
     <form [formGroup]="score">
       <ng-template matStepLabel>Ange resultat</ng-template>
-      <mat-grid-list cols="4" rowHeight="4rem"> 
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-       <mat-form-field>
-      <mat-select placeholder="Antal set" formControlName="set">
-    		<mat-option [value]="1">1</mat-option>
-    		<mat-option [value]="3">3</mat-option>
-      </mat-select>
-      </mat-form-field>
-      </mat-grid-tile>
-      
-      <mat-grid-tile [colspan]="3" [rowspan]="1">Set 1: 
-      <mat-form-field>
-       	<input type="number" min="0" max="999" matInput placeholder="Poäng {{players.value.user1?.name}}" formControlName="score1player1">
-      </mat-form-field>
-      <mat-form-field>
-       	<input type="number" min="0" max="999" matInput placeholder="Poäng {{players.value.user2?.name}}" formControlName="score1player2">
-      </mat-form-field>
-      </mat-grid-tile>
-      <div *ngIf="score.value.set == 3">
-      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-      <mat-grid-tile [colspan]="3" [rowspan]="">Set 2: 
-      <mat-form-field>
-       	<input type="number" min="0" max="999" matInput placeholder="Poäng {{players.value.user1?.name}}" formControlName="score2player1">
-      </mat-form-field>
-      <mat-form-field>
-       	<input type="number" min="0" max="999"  matInput placeholder="Poäng {{players.value.user2?.name}}" formControlName="score2player2">
-      </mat-form-field>
-      </mat-grid-tile>
-      <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-      <mat-grid-tile [colspan]="3" [rowspan]="1">Set 3: 
-      <mat-form-field>
-       	<input type="number" min="0" max="999" matInput placeholder="Poäng {{players.value.user1?.name}}" formControlName="score3player1">
-      </mat-form-field>
-      <mat-form-field>
-       	<input type="number" min="0" max="999" matInput placeholder="Poäng {{players.value.user2?.name}}" formControlName="score3player2">
-      </mat-form-field>
-      </mat-grid-tile>
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+      	<div fxFlex.xs fxFlex="200px">
+       		<mat-form-field>
+      			<mat-select placeholder="Antal set" formControlName="set">
+    				<mat-option [value]="1">1</mat-option>
+    				<mat-option [value]="3">3</mat-option>
+      			</mat-select>
+      		</mat-form-field>
+     	</div>
+     	</div>
+     	<div *ngIf="score.value.set">
+     	<div fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+     	<div fxFlex.xs fxFlex="50px" fxFlexAlign="center" fxFlexAlign.xs="left">
+     		Set 1:
+     	</div>
+      	<div fxFlex.xs fxFlex="200px">
+      		<mat-form-field>
+       			<input type="number" min="0" max="99" matInput placeholder="Poäng {{players.value.user1?.name}}" formControlName="score1player1">
+      		</mat-form-field>
+      	</div>
+      	<div fxFlex.xs fxFlex="200px">
+      		<mat-form-field>
+       			<input type="number" min="0" max="99" matInput placeholder="Poäng {{players.value.user2?.name}}" formControlName="score1player2">
+      		</mat-form-field>
+      	</div>
       </div>
+      </div>
+      <div *ngIf="score.value.set == 3">
       
-      </mat-grid-list>
+     	<div fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+     <div fxFlex.xs fxFlex="50px" fxFlexAlign="center" fxFlexAlign.xs="left">
+     		Set 2:
+     	</div>
+     	<div fxFlex.xs fxFlex="200px">
+      <mat-form-field>
+       	<input type="number" min="0" max="99" matInput placeholder="Poäng {{players.value.user1?.name}}" formControlName="score2player1">
+      </mat-form-field>
+      </div>
+      <div fxFlex.xs fxFlex="200px">
+      <mat-form-field>
+       	<input type="number" min="0" max="99"  matInput placeholder="Poäng {{players.value.user2?.name}}" formControlName="score2player2">
+      </mat-form-field>
+      </div>
+      </div>
+       <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+     <div fxFlex.xs fxFlex="50px" fxFlexAlign="center" fxFlexAlign.xs="left">
+     		Set 3:
+     	</div> 
+     	<div fxFlex.xs fxFlex="200px">
+      <mat-form-field>
+       	<input type="number" min="0" max="99" matInput placeholder="Poäng {{players.value.user1?.name}}" formControlName="score3player1">
+      </mat-form-field>
+      </div>
+      <div fxFlex.xs fxFlex="200px">
+      <mat-form-field>
+       	<input type="number" min="0" max="99" matInput placeholder="Poäng {{players.value.user2?.name}}" formControlName="score3player2">
+      </mat-form-field>
+     </div>
+      </div>
+      </div>
       
       <div>
         <button mat-button matStepperPrevious>Tillbaka</button>
@@ -87,4 +115,3 @@
     </div>
   </mat-step>
 </mat-horizontal-stepper>
-

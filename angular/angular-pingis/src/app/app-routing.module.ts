@@ -8,11 +8,13 @@ import { RulesComponent } from './rules/rules.component';
 import { UserComponent } from './user/user.component';
 
 const routes: Routes = [
+	  { path: '', component: RulesComponent },
 	  { path: 'addmatch', component: AddmatchComponent },
 	  { path: 'history', component: HistoryComponent },
 	  { path: 'rules', component: RulesComponent },
 	  { path: 'standings', component: StandingsComponent },
 	  { path: 'user/:name', component: UserComponent }
+	  { path: '**', redirectTo: '', pathMatch: 'full' }
 	];
 	 
 @NgModule({
