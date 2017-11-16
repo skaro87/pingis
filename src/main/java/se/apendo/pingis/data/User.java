@@ -3,39 +3,48 @@ package se.apendo.pingis.data;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OrderBy;
+import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import lombok.Data;
 
-@Data
 @Entity
+@Table(name = "pingis_users")
 public class User {
 
+	@Column(name="user_id")
 	private @Id @GeneratedValue Long id;
 
+	@Column(name = "user_name")
 	private String name;
+	@Column(name = "user_rating")
 	private int rating;
+	@Column(name= "user_hidden_rating")
+	private int hiddenRating;
 
-	@ManyToMany(mappedBy="users", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@OrderBy("id ASC")
 	@JsonManagedReference
+	@Column(name = "user_matches")
 	private List<Match> matches;
 
 	private User() {
 	}
 
-	public User(String name, int rating) {
+	public User(String name, int rating, int hiddenRating) {
 		this.name = name;
 		this.rating = rating;
+		this.hiddenRating = hiddenRating;
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -50,6 +59,15 @@ public class User {
 
 	public int getRating() {
 		return rating;
+	}
+
+	@JsonIgnore
+	public int getHiddenRating() {
+		return hiddenRating;
+	}
+
+	public void setHiddenRating(int hiddenRating) {
+		this.hiddenRating = hiddenRating;
 	}
 
 	public void setRating(int rating) {

@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import se.apendo.pingis.data.Match;
 import se.apendo.pingis.data.MatchRepository;
-import se.apendo.pingis.service.MastchService;
+import se.apendo.pingis.service.MatchService;
 
 @Controller
 @RequestMapping("/api/match")
 public class MatchController {   
 	
 	@Autowired
-	private MastchService ratingService;
+	private MatchService ratingService;
 	
 	@Autowired
 	private MatchRepository matchRepository;

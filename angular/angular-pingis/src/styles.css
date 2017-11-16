@@ -1,5 +1,7 @@
-@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
-
 .fill-remaining-space {
   flex: 1 1 auto;
+}
+
+.logo {
+	max-height: 1.5rem;
 }

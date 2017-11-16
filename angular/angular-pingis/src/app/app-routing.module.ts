@@ -13,7 +13,7 @@ const routes: Routes = [
 	  { path: 'history', component: HistoryComponent },
 	  { path: 'rules', component: RulesComponent },
 	  { path: 'standings', component: StandingsComponent },
-	  { path: 'user/:name', component: UserComponent }
+	  { path: 'user/:name', component: UserComponent },
 	  { path: '**', redirectTo: '', pathMatch: 'full' }
 	];
 	 

@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,6 +23,16 @@ public class UserController {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@PostMapping("/name/{username}")
+	public ResponseEntity<User> createUser(@PathVariable("username") String username) {
+		if (userRepository.findByNameIgnoreCase(username).isEmpty()) {
+			User user = new User(username, 1000, 1500);
+			userRepository.save(user);
+			return new ResponseEntity<>(user, HttpStatus.CREATED);
+		}
+		return new ResponseEntity<>(HttpStatus.CONFLICT);
+	}
 	
 	@GetMapping("/{name}")
 	public ResponseEntity<User> getUser(@PathVariable(value = "name") String name) {

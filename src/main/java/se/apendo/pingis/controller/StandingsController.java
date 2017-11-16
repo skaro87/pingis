@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import se.apendo.pingis.data.Match;
 import se.apendo.pingis.data.User;
 import se.apendo.pingis.data.UserRepository;
-import se.apendo.pingis.service.MastchService;
+import se.apendo.pingis.service.MatchService;
 
 @Controller
 @RequestMapping("/api/standings")

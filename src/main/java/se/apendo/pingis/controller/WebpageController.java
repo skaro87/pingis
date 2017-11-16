@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class WebpageController {
 	
-	@RequestMapping(value = "/")
+	@RequestMapping({ "/", "/addmatch", "/standings", "/history", "/rules", "/user/*"})
 	public String index() {
-		return "index";
+		return "forward:/index.html";
 	}
 
 }
