@@ -18,6 +18,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -30,6 +35,7 @@ public class Match {
 
 	@ManyToMany(mappedBy="matches")
 	@JsonBackReference
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<User> users;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -47,6 +53,10 @@ public class Match {
 		this.users = users;
 		result.forEach(m -> addSetFromMap(m));
 		this.time = Timestamp.valueOf(LocalDateTime.now());
+	}
+
+	public Match(List<User> users) {
+		this.users = users;
 	}
 
 	private void addSetFromMap(Map<String, Integer> map) {

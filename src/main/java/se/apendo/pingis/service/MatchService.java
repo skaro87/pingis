@@ -1,10 +1,15 @@
 package se.apendo.pingis.service;
 
+import java.time.LocalDate;
+import java.time.temporal.IsoFields;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +57,17 @@ public class MatchService {
 		return match;
 	}
 	
+	public void playDecayMatches() {
+		//List<User> users = userRepository.findAllByOrderByRatingDesc();
+	}
+	
 	public void playMatch(Match match) {
+		
+		if (match.getUsers().size() == 1) {
+			doDecay(match.getUsers());
+			return;
+		}
+		
 		User player1 = match.getUsers().get(0);
 		User player2 = match.getUsers().get(1);
 		
@@ -166,13 +181,28 @@ public class MatchService {
 		users.forEach(userList::add);
 		matches.forEach(matchList::add);
 		recalculateRatings(userList, matchList);
-		
+		users.forEach(u -> userRepository.save(u));
+		matches.forEach(m -> matchRepository.save(m));
 	}
 
 	public void recalculateRatings(List<User> users, List<Match> matches) {
-		//Map<String, User> userMap = users.stream().collect(Collectors.toMap(User::getName, u -> u));
-		matches.forEach(match -> {
+		for (Match match: matches) {
 			playMatch(match);
+		}
+	}
+	
+	
+	public void doDecay(List<User> users) {
+		users.forEach(u -> {
+			if (u.getRating() > 1000) {
+				u.setRating((int) Math.round(u.getRating() * 0.98));
+			}
+			else if (u.getRating() > 800) {
+				u.setRating((int) Math.round(u.getRating() * 0.99));
+			}
+			
+			LOG.debug("Decaying rating for user " + u.getName() + ". New rating: "+ u.getRating());
+			
 		});
 	}
 	

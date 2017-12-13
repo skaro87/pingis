@@ -57,5 +57,11 @@ public class MatchController {
 		 ret.put("Rickard", 7);
 		 return ret;
 	 }
+	 
+	 @PostMapping("/redoMatches")
+	 public ResponseEntity<String> redoAllMatches() {
+		 ratingService.recalculateRatings();
+		 return new ResponseEntity<>(HttpStatus.OK);
+	 }
 
 }
